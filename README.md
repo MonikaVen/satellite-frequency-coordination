@@ -1,1 +1,1 @@
-# satellite-frequency-ccordination
+# satellite-frequency-coordination
