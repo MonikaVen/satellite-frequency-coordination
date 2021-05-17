@@ -40,9 +40,18 @@ satellite_num = 0
 f = "results.csv"
 for satellite_name in config.satellite_names:
     print(satellite_name)
-    query_results = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_1 + "|" + f_2 + "|" + f_3 +"|" + f_4 + "|" + f_5 + "|" + f_6 + ")")
+    # query_results = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_1 + "|" + f_2 + "|" + f_3 +"|" + f_4 + "|" + f_5 + "|" + f_6 + ")")
+    group_1 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_1 + ")")
+    group_2 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_2 + ")")
+    group_3 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_3 + ")")
+    group_4 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_4 + ")")
+    group_5 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_5 + ")")
+    group_6 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_6 + ")")
+
+    row_1 = group_1[["beam_name", "stn_name", "freq_mhz", "ctry_y"]]
+    print(row_1)
     if (satellite_num == 0):
-        query_results.to_csv(f, index=False, mode="w")
+        row_1.to_csv(f, index=False, mode="w")
     else:
-        query_results.to_csv(f, index=False, header=False, mode="a")     
+        row_1.to_csv(f, index=False, header=False, mode="a")     
     satellite_num = satellite_num + 1
