@@ -2,20 +2,12 @@ import pandas as pd
 import config
 #READ TABLES
 com_el = pd.read_csv("com_el.csv")
-grp = pd.read_csv("grp.csv")
 srv_area = pd.read_csv("srv_area.csv")
-
-adm_assoc = pd.read_csv("adm_assoc.csv")
 freq = pd.read_csv("freq.csv")
-
-#TEST TABLES
-
-#SELECT DISTINCT grp_id, freq_mhz, beam_name, sat_name, stn_name, ctry FROM freq, com_el WHERE (sat_name = "PAKTES-1") AND ((freq_mhz > 2070 AND freq_mhz < 2071) OR (freq_mhz > 2200 AND freq_mhz < 2290) OR (freq_mhz > 8025 AND freq_mhz < 8400) OR (freq_mhz > 24450 AND freq_mhz < 24650) OR (freq_mhz > 25250 AND freq_mhz < 27000) OR (freq_mhz > 32300 AND freq_mhz < 33000)) 
-
 
 #TO DO
 #check if there is an asssociated space station
-print(grp.columns)
+
 #merged_0 = adm_assoc.merge(freq)
 merged_1 = freq.merge(srv_area, how='left', on='grp_id')
 merged_2 = com_el.merge(merged_1, how='left', on='ntc_id')
