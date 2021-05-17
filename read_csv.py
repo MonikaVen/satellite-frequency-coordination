@@ -2,15 +2,20 @@ import pandas as pd
 import config
 #READ TABLES
 com_el = pd.read_csv("com_el.csv")
+com_el_values = com_el[["ntc_id", "sat_name", "stn_name", "ntf_rsn"]]
 srv_area = pd.read_csv("srv_area.csv")
+srv_area_ctry = srv_area[["grp_id", "ctry"]]
 freq = pd.read_csv("freq.csv")
+freq_freq_mhz = freq[["grp_id", "ntc_id", "freq_mhz","beam_name"]]
 
+# print(srv_area.head)
 #TO DO
 #check if there is an asssociated space station
 
 #merged_0 = adm_assoc.merge(freq)
-merged_1 = freq.merge(srv_area, how='left', on='grp_id')
-merged_2 = com_el.merge(merged_1, how='left', on='ntc_id')
+merged_1 = freq_freq_mhz.merge(srv_area_ctry, how='left', on='grp_id')
+# print(merged_1.head)
+merged_2 = com_el_values.merge(merged_1, how='left', on='ntc_id')
 
 f_11 = str(config.freq_mhz_1_min)
 f_12 = str(config.freq_mhz_1_max)
@@ -39,7 +44,7 @@ f_6 = "(freq_mhz > " + f_61 +  " & freq_mhz < " + f_62 + ")"
 
 def get_row(df, fr):
     group = df.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ fr + ")")
-    row = group[["sat_name" ,"beam_name", "stn_name", "freq_mhz"]]
+    row = group[["sat_name" ,"beam_name", "stn_name", "freq_mhz", "ctry"]]
     row = row.drop_duplicates()
     print(row)
     return row
