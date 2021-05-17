@@ -4,7 +4,7 @@
 
 Install Python3 and pandas.
 
-```pip3 install pandas```
+```pip3 install -r requirements.txt```
 
 Modify `config.py` file for desired satellite names.
 

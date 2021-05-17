@@ -36,22 +36,33 @@ f_61 = str(config.freq_mhz_6_min)
 f_62 = str(config.freq_mhz_6_max)
 f_6 = "(freq_mhz > " + f_61 +  " & freq_mhz < " + f_62 + ")"
 
+
+def get_row(df, fr):
+    group = df.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ fr + ")")
+    row = group[["sat_name" ,"beam_name", "stn_name", "freq_mhz"]]
+    row = row.drop_duplicates()
+    print(row)
+    return row
+
+def write_to_csv(array_dfs, f):
+    for df in array_dfs:
+        df.to_csv(f, index=False, header=False, mode="a")
+    return 1
+
 satellite_num = 0
 f = "results.csv"
 for satellite_name in config.satellite_names:
     print(satellite_name)
-    # query_results = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_1 + "|" + f_2 + "|" + f_3 +"|" + f_4 + "|" + f_5 + "|" + f_6 + ")")
-    group_1 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_1 + ")")
-    group_2 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_2 + ")")
-    group_3 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_3 + ")")
-    group_4 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_4 + ")")
-    group_5 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_5 + ")")
-    group_6 = merged_2.query("(ntc_id != 118590034) & (sat_name == '"+ satellite_name +"') & (ntf_rsn == 'N') & ( "+ f_6 + ")")
-
-    row_1 = group_1[["beam_name", "stn_name", "freq_mhz", "ctry_y"]]
-    print(row_1)
-    if (satellite_num == 0):
-        row_1.to_csv(f, index=False, mode="w")
+    row_1 = get_row(merged_2, f_1)
+    row_2 = get_row(merged_2, f_2)
+    row_3 = get_row(merged_2, f_3)
+    row_4 = get_row(merged_2, f_4)
+    row_5 = get_row(merged_2, f_5)
+    row_6 = get_row(merged_2, f_6)
+    print(row_2)
+    if (satellite_num == 0 ):
+        row_1.to_csv(f, index=False, header=True, mode="a")
+        write_to_csv([row_2, row_3, row_4, row_5, row_6], f)
     else:
-        row_1.to_csv(f, index=False, header=False, mode="a")     
+        write_to_csv([row_1, row_2, row_3, row_4, row_5, row_6], f)
     satellite_num = satellite_num + 1
